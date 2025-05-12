@@ -1,0 +1,17 @@
+package parkinglot;
+
+import vehicletype.Vehicle;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public abstract class ParkingLotAbstract {
+    protected static ParkingLot instance;
+    protected final List<Level> levels = new ArrayList<>();
+
+    public abstract void addLevel(Level level);
+    public abstract void parkVehicle(Vehicle vehicle);
+    public abstract void unParkVehicle(Vehicle vehicle);
+    public abstract void displayAvailability();
+    public abstract Vehicle getVehicle(String licensePlate);
+}
