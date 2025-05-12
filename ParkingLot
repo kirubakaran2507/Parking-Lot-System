@@ -1,0 +1,61 @@
+package parkinglot;
+
+import vehicletype.Vehicle;
+
+import java.util.ArrayList;
+import java.util.List;
+
+class ParkingLot extends ParkingLotAbstract {
+    private ParkingLot(){
+
+    }
+
+    public synchronized static ParkingLot getInstance(){
+        if (instance==null){
+            instance = new ParkingLot();
+        }
+        return instance;
+    }
+
+    public void addLevel(Level level){
+        levels.add(level);
+    }
+
+    public synchronized void parkVehicle(Vehicle vehicle){
+        for (Level level : levels){
+            if (level.parkVehicle(vehicle)){
+                System.out.println("Vehicle parked successfully");
+                return;
+            }
+        }
+        System.out.println("Could not park vehicle");
+    }
+
+    public synchronized void unParkVehicle(Vehicle vehicle){
+        for (Level level : levels){
+            if(level.unParkVehicle(vehicle)){
+                System.out.println("Vehicle un parked successfully");
+                return;
+            }
+        }
+    }
+
+
+    public void displayAvailability(){
+        for (Level level : levels){
+            level.displayAvailability();
+        }
+    }
+
+    public Vehicle getVehicle(String licensePlate){
+        for (Level level : levels){
+            for (ParkingSpot spot : level.getParkingSpots()){
+                Vehicle parked = spot.getParked();
+                if (!spot.isAvailable() && parked.getLicensePlate().equals(licensePlate)){
+                    return parked;
+                }
+            }
+        }
+        throw new IllegalArgumentException("Invalid license plate or vehicle not parked");
+    }
+}
