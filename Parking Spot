@@ -1,0 +1,44 @@
+package parkinglot;
+
+import vehicletype.Vehicle;
+import vehicletype.VehicleType;
+
+class ParkingSpot {
+    private final int spotNumber;
+    private final VehicleType vehicleType;
+    private Vehicle parked;
+
+    public ParkingSpot(int spotNumber,VehicleType vehicleType){
+        this.spotNumber = spotNumber;
+        this.vehicleType = vehicleType;
+    }
+
+    public synchronized void parkVehicle(Vehicle vehicle){
+        if (isAvailable() && vehicleType==vehicle.getVehicleType()){
+            parked = vehicle;
+        }
+        else {
+            throw new IllegalArgumentException("Spot already occupied.");
+        }
+    }
+
+    public void unParkVehicle(){
+        parked = null;
+    }
+
+    public synchronized boolean isAvailable(){
+        return parked==null;
+    }
+
+    public VehicleType getVehicleType() {
+        return vehicleType;
+    }
+
+    public Vehicle getParked() {
+        return parked;
+    }
+
+    public int getSpotNumber() {
+        return spotNumber;
+    }
+}
