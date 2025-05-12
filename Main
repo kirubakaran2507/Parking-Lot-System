@@ -1,0 +1,46 @@
+package parkinglot;
+
+import vehicletype.*;
+
+import java.util.Scanner;
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        ParkingLot parkingLot = ParkingLot.getInstance();
+
+        parkingLot.addLevel(new Level(1,50));
+        parkingLot.addLevel(new Level(2,80));
+        parkingLot.addLevel(new Level(3,100));
+        parkingLot.addLevel(new Level(4,150));
+
+        while (true){
+            System.out.println("1. Park vehicle\n2. Un park vehicle\n3. Show available spot\n4.Exit");
+            int option = scanner.nextInt();
+
+            switch (option) {
+                case 1 -> {
+                    System.out.println("Vehicle type\n 1.Motorbike\n 2.Car\n 3.Truck");
+                    int vehicleOption = scanner.nextInt();
+                    System.out.println("Enter license plate");
+                    String licensePlate = scanner.next();
+                    switch (vehicleOption) {
+                        case 1 -> parkingLot.parkVehicle(new MotorBike(licensePlate, VehicleType.MOTORBIKE));
+                        case 2 -> parkingLot.parkVehicle(new Car(licensePlate, VehicleType.CAR));
+                        case 3 -> parkingLot.parkVehicle(new Truck(licensePlate, VehicleType.TRUCK));
+                        default -> System.out.println("Invalid vehicle option");
+                    }
+                }
+                case 2 -> {
+                    System.out.println("Enter license plate");
+                    String licensePlate = scanner.next();
+                    Vehicle vehicle = parkingLot.getVehicle(licensePlate);
+                    parkingLot.unParkVehicle(vehicle);
+                }
+                case 3 -> parkingLot.displayAvailability();
+                case 4 -> System.exit(0);
+                default -> System.out.println("Invalid option");
+            }
+        }
+    }
+}
